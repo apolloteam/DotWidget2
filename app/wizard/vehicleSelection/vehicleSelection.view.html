@@ -1,0 +1,47 @@
+<div>
+	<div ng-repeat="car in services">
+		<!-- <div data-car-category="{{ car.vehicle.category }}"> //-->
+		<h4>{{ car.vehicle.category }} {{ car.vehicle.descrip }}</h4>
+		<div title="{{ car.vehicle.summary }}">
+			{{ car.vehicle.summary }}
+		</div>
+		<div>
+			{{ car.vehicle.maxPax }} <i class="glyphicon glyphicon-user"></i>
+			{{ car.vehicle.maxLuggage }} <i class="glyphicon glyphicon-briefcase"></i>
+		</div>
+		<img class="image" ng-src="{{car.vehicle.imageUrl}}" alt="Image picture" />	
+		<div> {{  car.vehicle.currency }} </div>
+		<h3 >{{ car.vehicle.finalRate }}</h3>
+		<button class="btn btn-next btn-info" ng-disabled="car.vehicle.maxPax<ride.passengers||car.vehicle.maxLuggage<ride.bags">Continuar</button>
+		<div class="text-danger" ng-show="car.vehicle.maxPax<ride.passengers||car.vehicle.maxLuggage<ride.bags">Excede número de pasajeros o equipaje solicitado.</div>
+		<div>{{ car.vehicle.features }}</div>
+		<hr>
+		<!--
+				
+			<div class="text-container wrapper">
+				<h4 class="title elipsis-text">{{ car.vehicle.category }} {{ car.vehicle.descrip }}</h4>
+				<div class="description" title="{{ car.vehicle.summary }}">
+					{{ car.vehicle.summary }}
+				</div>
+				<div class="feature">
+					{{ car.vehicle.maxPax }} <i class="glyphicon glyphicon-user"></i>
+					{{ car.vehicle.maxLuggage }} <i class="glyphicon glyphicon-briefcase"></i>
+				</div>
+			</div>
+			
+		
+		<div class="image-container wrapper">
+		<img class="image" ng-src="{{car.vehicle.imageUrl}}" alt="Image picture">	
+		</div>
+		<div class="price-wrapper wrapper text-center">
+			<div class="currency"> {{  car.vehicle.currency }} </div>
+			<h3 class="price">{{ car.vehicle.finalRate }}</h3>
+			<button class="btn btn-next btn-info">Continuar</button>
+			<div class="text-danger" ng-show="car.vehicle.MaxPax>ride.passengers||car.vehicle.MaxLuggage>ride.bags">Excede número de pasajeros o equipaje solicitado.</div>
+		</div>
+		<div>{{ car.vehicle.features }}</div>
+		 //-->
+	<!--	</div> //-->
+	</div>
+	<button type="button" class="btn btn-prev" ng-click="volver();">Volver</button>	
+</div>

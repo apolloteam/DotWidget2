@@ -1,0 +1,38 @@
+<div class="summary">
+	<h4 id="title" class="title emphasis">Resumen de reserva</h4>
+	<div>
+		<h5 class="title primary-text">Fecha y horario de recogida</h5>
+		<span class="time-text">{{ride.date | date:'dd/MM/yyyy'}} {{ride.time|date:'hh:mm'}}</span>
+
+		<h5 class="title primary-text">Desde</h5>
+		<span class="from-text">{{ride.from}}</span>
+		<span class="details-text">{{ride.details}}</span>
+		
+		<div class="to-wrapper" ng-show="ride.type=='location'">
+			<h5 class="title primary-text">Hasta</h5>
+			<span class="to-text">{{ride.to}}</span>
+		</div>
+		
+		<div class="hours-wrapper" ng-show="ride.type=='hours'">
+			<h5 class="title primary-text">Horas</h5>
+			<span class="to-hours">{{ride.hours}}</span>
+		</div>
+	</div>
+
+	<div class="vehicle-wrapper" ng-show="stepEneable>2">
+		<h5 class="title primary-text">Vehículo seleccionado</h5>
+
+		<div>
+			<div></div>
+			<img alt="car image" width="120" ng-src="{{ride.vehicle.image}}" alt="{{ride.vehicle.description}}">
+		</div>
+
+		<div class="total-wrapper">
+			<h5 class="title primary-text">Total</h5>
+			<div class="price-wrapper">
+				<span class="currency">{{ride.total.currency}}</span>
+				<span class="value">{{ride.total.value}}</span>
+			</div>
+		</div>
+	</div>
+</div>
