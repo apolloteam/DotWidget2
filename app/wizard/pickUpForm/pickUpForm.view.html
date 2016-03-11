@@ -1,17 +1,42 @@
 <form name="pickupForm" action="#">
-    <h4>{{'RES_PICKUPFORM.Transfer data' | translate}}</h4>
+    <h4>Datos del viaje</h4>
     <div class="form-group ">
         <label class="control-label" for="">{{'RES_PICKUPFORM.Pickup location' | translate}}</label>
-        <input type="text" class="form-control" placeholder="{{'RES_PICKUPFORM.Address' | translate}}" ng-model="ride.from" value="" autocomplete="off" aria-required="true" required>
+        <input type="text" class="form-control" ng-minlength="3" placeholder="{{'RES_PICKUPFORM.Address' | translate}}"
+               name="pickupLocation" ng-model="ride.from" value="" autocomplete="off" ng-change="noPickupResults=false;"
+               aria-required="true" required>
+
+        <div ng-messages="pickupForm.pickupLocation.$error">
+            <span class="help-block" ng-message="required" ng-show="pickupForm.pickupLocation.$touched">Por favor ingrese la dirección de recogida.</span>
+            <span class="help-block" ng-message="minlength" ng-show="pickupForm.pickupLocation.$touched">Por favor ingrese la dirección de recogida.</span>
+        </div>
+
+        <div ng-show="noPickupResults">
+            <span class="help-block">_No se pudo encontrar la ubicación. Intente completar con la numeración de la calle, estado o provincia, ciudad y país._</span>
+        </div>
+
     </div>
     <div class="form-group" ng-init="ride.type='location'">
-        <input type="radio" value="location" ng-model="ride.type" ng-change="ride.hours=''">
+        <input type="radio" value="location" ng-model="ride.type" ng-change="ride.hours='2'">
         <label for="" class="control-label">{{'RES_PICKUPFORM.Destination address' | translate}}</label>
         <input type="radio" value="hours" ng-model="ride.type" ng-change="ride.to=''">
         <label for="" class="control-label">{{'RES_PICKUPFORM.Hourly service' | translate}}</label>
     </div>
-    <div class="form-group" ng-show="ride.type=='location'">
-        <input type="text" placeholder="{{'RES_PICKUPFORM.Address' | translate}}" ng-mode ng-model="ride.to" class="form-control" name="dropOffLocation" value="" autocomplete="off" aria-required="true" ng-required="ride.type=='location'">
+    <div class="form-group" ng-show="ride.type=='location'" 
+         ng-class="{'has-error' : pickupForm.dropOffLocation.$touched && pickupForm.dropOffLocation.$invalid }">
+        <input type="text" placeholder="{{'RES_PICKUPFORM.Address' | translate}}" ng-minlength="3" ng-model="ride.to"
+               class="form-control" name="dropOffLocation" value="" autocomplete="off" aria-required="true"
+               ng-required="ride.type=='location'" ng-change="noDropOffResults=false;">
+
+        <div ng-messages="pickupForm.dropOffLocation.$error">
+            <span class="help-block" ng-message="required" ng-show="pickupForm.dropOffLocation.$touched">Por favor ingrese la dirección de destino.</span>
+            <span class="help-block" ng-message="minlength" ng-show="pickupForm.dropOffLocation.$touched">Por favor ingrese la dirección de destino.</span>
+        </div>
+
+        <div ng-show="noDropOffResults">
+            <span class="help-block">_No se pudo encontrar la ubicación. Intente completar con la numeración de la calle, estado o provincia, ciudad y país._</span>
+        </div>
+
     </div>
     <div class="form-group" ng-show="ride.type=='hours'">
         <select name="hourlyService" class="form-control" ng-model="ride.hours" placeholder="{{'RES_PICKUPFORM.Select hours amount' | translate}}" ng-require ng-required="ride.type=='hours'">
@@ -28,122 +53,122 @@
             <option value="12">12 {{'RES_PICKUPFORM.Hours' | translate}}</option>
             <option value="13">13 {{'RES_PICKUPFORM.Hours' | translate}}</option>
             <option value="14">14 {{'RES_PICKUPFORM.Hours' | translate}}</option>
-        </select>
+		</select>
     </div>
     <div class="row">
         <div class="col-xs-12 col-sm-6">
             <div class="form-group">
                 <label class="control-label" for="passengerQuantity">{{'RES_PICKUPFORM.Passengers' | translate}}</label>
-                <select class="form-control" id="passengerQuantity" aria-required="true" ng-model="ride.passengers" required>
-                    <option selected="selected">1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                    <option>8</option>
-                    <option>9</option>
-                    <option>10</option>
-                    <option>11</option>
-                    <option>12</option>
-                    <option>13</option>
-                    <option>14</option>
-                    <option>15</option>
-                    <option>16</option>
-                    <option>17</option>
-                    <option>18</option>
-                    <option>19</option>
-                    <option>20</option>
-                    <option>21</option>
-                    <option>22</option>
-                    <option>23</option>
-                    <option>24</option>
-                    <option>25</option>
-                    <option>26</option>
-                    <option>27</option>
-                    <option>28</option>
-                    <option>29</option>
-                    <option>30</option>
-                    <option>31</option>
-                    <option>32</option>
-                    <option>33</option>
-                    <option>34</option>
-                    <option>35</option>
-                    <option>36</option>
-                    <option>37</option>
-                    <option>38</option>
-                    <option>39</option>
-                    <option>40</option>
-                    <option>41</option>
-                    <option>42</option>
-                    <option>43</option>
-                    <option>44</option>
-                    <option>45</option>
-                    <option>46</option>
-                    <option>47</option>
-                    <option>48</option>
-                    <option>49</option>
-                    <option>50</option>
-                </select>
+                <select class="form-control" id="passengerQuantity" name="passengerQuantity" aria-required="true" ng-model="ride.passengers" required>
+                    <option>1</option>
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+			<option>6</option>
+			<option>7</option>
+			<option>8</option>
+			<option>9</option>
+			<option>10</option>
+			<option>11</option>
+			<option>12</option>
+			<option>13</option>
+			<option>14</option>
+			<option>15</option>
+			<option>16</option>
+			<option>17</option>
+			<option>18</option>
+			<option>19</option>
+			<option>20</option>
+			<option>21</option>
+			<option>22</option>
+			<option>23</option>
+			<option>24</option>
+			<option>25</option>
+			<option>26</option>
+			<option>27</option>
+			<option>28</option>
+			<option>29</option>
+			<option>30</option>
+			<option>31</option>
+			<option>32</option>
+			<option>33</option>
+			<option>34</option>
+			<option>35</option>
+			<option>36</option>
+			<option>37</option>
+			<option>38</option>
+			<option>39</option>
+			<option>40</option>
+			<option>41</option>
+			<option>42</option>
+			<option>43</option>
+			<option>44</option>
+			<option>45</option>
+			<option>46</option>
+			<option>47</option>
+			<option>48</option>
+			<option>49</option>
+			<option>50</option>
+			</select>
             </div>
         </div>
         <div class="col-xs-12 col-sm-6">
             <div class="form-group">
                 <label class="control-label" for="bagsQuantity">{{'RES_PICKUPFORM.Luggage' | translate}}</label>
-                <select class="form-control" aria-required="true" ng-model="ride.bags" required>
-                    <option selected="selected">0</option>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                    <option>8</option>
-                    <option>9</option>
-                    <option>10</option>
-                    <option>11</option>
-                    <option>12</option>
-                    <option>13</option>
-                    <option>14</option>
-                    <option>15</option>
-                    <option>16</option>
-                    <option>17</option>
-                    <option>18</option>
-                    <option>19</option>
-                    <option>20</option>
-                    <option>21</option>
-                    <option>22</option>
-                    <option>23</option>
-                    <option>24</option>
-                    <option>25</option>
-                    <option>26</option>
-                    <option>27</option>
-                    <option>28</option>
-                    <option>29</option>
-                    <option>30</option>
-                    <option>31</option>
-                    <option>32</option>
-                    <option>33</option>
-                    <option>34</option>
-                    <option>35</option>
-                    <option>36</option>
-                    <option>37</option>
-                    <option>38</option>
-                    <option>39</option>
-                    <option>40</option>
-                    <option>41</option>
-                    <option>42</option>
-                    <option>43</option>
-                    <option>44</option>
-                    <option>45</option>
-                    <option>46</option>
-                    <option>47</option>
-                    <option>48</option>
-                    <option>49</option>
-                    <option>50</option>
-                </select>
+                <select class="form-control" aria-required="true" name="bagsQuantity" ng-model="ride.bags" required>
+                    <option>0</option>
+			<option>1</option>
+			<option>2</option>
+			<option>3</option>
+			<option>4</option>
+			<option>5</option>
+			<option>6</option>
+			<option>7</option>
+			<option>8</option>
+			<option>9</option>
+			<option>10</option>
+			<option>11</option>
+			<option>12</option>
+			<option>13</option>
+			<option>14</option>
+			<option>15</option>
+			<option>16</option>
+			<option>17</option>
+			<option>18</option>
+			<option>19</option>
+			<option>20</option>
+			<option>21</option>
+			<option>22</option>
+			<option>23</option>
+			<option>24</option>
+			<option>25</option>
+			<option>26</option>
+			<option>27</option>
+			<option>28</option>
+			<option>29</option>
+			<option>30</option>
+			<option>31</option>
+			<option>32</option>
+			<option>33</option>
+			<option>34</option>
+			<option>35</option>
+			<option>36</option>
+			<option>37</option>
+			<option>38</option>
+			<option>39</option>
+			<option>40</option>
+			<option>41</option>
+			<option>42</option>
+			<option>43</option>
+			<option>44</option>
+			<option>45</option>
+			<option>46</option>
+			<option>47</option>
+			<option>48</option>
+			<option>49</option>
+			<option>50</option>
+		</select>
             </div>
         </div>
     </div>
@@ -152,10 +177,14 @@
             <div class="form-group">
                 <label class="control-label" for="rideDate">{{'RES_PICKUPFORM.Pickup date' | translate}}</label>
                 <div class="input-group date">
-                    <input id="rideDate" type="date" value="" class="form-control" ng-model="ride.date" placeholder="{{appSettings.format.dateFormat}}" autocomplete="off" aria-required="true" required>
+                    <input id="rideDate" type="date" name="rideDate" value="" class="form-control" ng-model="ride.date" placeholder="{{appSettings.format.dateFormat}}" autocomplete="off" aria-required="true" required>
                     <span class="emphasis input-group-addon">
-                        <i class="glyphicon glyphicon-calendar"></i>
-                    </span>
+					<i class="glyphicon glyphicon-calendar"></i>
+				</span>
+                </div>
+                <div ng-messages="pickupForm.rideDate.$error">
+                    <span id="helpBlock" class="help-block" ng-message="required">Por favor ingrese la fecha.</span>
+                    <span id="helpBlock" ng-message="date" class="help-block">Por favor ingrese una fecha válida.</span>
                 </div>
             </div>
         </div>
@@ -163,10 +192,14 @@
             <div class="form-group">
                 <label class="control-label" for="">{{'RES_PICKUPFORM.Pickup time' | translate}}</label>
                 <div class="input-group clockpicker">
-                    <input type="time" ng-model="ride.time" class="form-control" value="" placeholder="{{appSettings.format.timeFormat}}" autocomplete="off" aria-required="true" required>
+                    <input type="time" name="time" ng-model="ride.time" class="form-control" value="" placeholder="{{appSettings.format.timeFormat}}" autocomplete="off" aria-required="true" required>
                     <span class="emphasis input-group-addon">
-                        <span class="glyphicon glyphicon-time"></span>
+						<span class="glyphicon glyphicon-time"></span>
                     </span>
+                </div>
+                <div ng-messages="pickupForm.time.$error">
+                    <span id="helpBlock" class="help-block" ng-message="required">Por favor ingrese la hora.</span>
+                    <span id="helpBlock" ng-message="time" class="help-block">Por favor ingrese una hora válida.</span>
                 </div>
             </div>
         </div>
