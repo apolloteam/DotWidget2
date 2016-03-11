@@ -1,18 +1,18 @@
 <div class="container">
     <ul class="nav nav-tabs">
-        <li role="presentation" ng-class="{'active': stepEneable==1 }" ><a href="#" ng-click="stepEneable=1">Datos del viaje</a></li>
-		<li role="presentation" ng-class="{'active': stepEneable==2, 'disabled': stepEneable<2 }"><a href="#" ng-click="stepEneable=2">Selecci&oacute;n de veh&iacute;culo</a></li>
-        <li role="presentation" ng-class="{'active': stepEneable==3, 'disabled': stepEneable<3 }"><a href="#" ng-click="stepEneable=3">Informaci&oacute;n de contacto</a></li>
-        <li role="presentation" ng-class="{'active': stepEneable==4, 'disabled': stepEneable<4 }"><a href="#" ng-click="stepEneable=4">Confirmaci&oacute;n</a></li>
-        <li role="presentation" ng-class="{'active': stepEneable==5, 'disabled': stepEneable<5 }"><a href="#" ng-click="stepEneable=5">Pago</a></li>
+        <li role="presentation" ng-class="{'active': stepEneable==1 }"><a href="#" ng-click="stepEneable=1">{{'RES_WIZARD.Transfer data' | translate}}</a></li>
+            <li role="presentation" ng-class="{'active': stepEneable==2, 'disabled': stepEneable<2 }"><a href="#" ng-click="stepEneable=2">{{'RES_WIZARD.Vehicle selection' | translate}}</a></li>
+            <li role="presentation" ng-class="{'active': stepEneable==3, 'disabled': stepEneable<3 }"><a href="#" ng-click="stepEneable=3">{{'RES_WIZARD.Contact info' | translate}}</a></li>
+            <li role="presentation" ng-class="{'active': stepEneable==4, 'disabled': stepEneable<4 }"><a href="#" ng-click="stepEneable=4">{{'RES_WIZARD.Confirmation' | translate}}</a></li>
+            <li role="presentation" ng-class="{'active': stepEneable==5, 'disabled': stepEneable<5 }"><a href="#" ng-click="stepEneable=5">{{'RES_WIZARD.Payment' | translate}}</a></li>
     </ul>
     <div class="row">
         <div class="col-xs-8 col-sm-8">
-			<pick-up-form ng-show="stepEneable==1"></pick-up-form>
-			<vehicle-selection ng-show="stepEneable==2"></vehicle-selection>
-		</div>
+            <pick-up-form ng-show="stepEneable==1"></pick-up-form>
+            <vehicle-selection ng-show="stepEneable==2"></vehicle-selection>
+        </div>
         <div class="col-xs-4 col-sm-4">
-			<ride-summary></ride-summary>
-		</div>
+            <ride-summary></ride-summary>
+        </div>
     </div>
 </div>

@@ -1,24 +1,26 @@
 (function() {
     'use strict';
     angular
-		.module('dotWidget.wizard.pickUpForm', ['dotWidget.services', 
-												 'angularMoment', 
-												 'ngAnimate', 
-												 'toastr'])
-			.directive('pickUpForm', pickUpFormDirectiveFn);
-	
-	function pickUpFormDirectiveFn() {
-		return {
-			restrict: 'E',
-			scope: false,
-			replace: true,
-			templateUrl: 'app/wizard/pickUpForm/pickUpForm.view.html',
-			controller: pickUpFormCtrlFn,
-			require : ['$scope', '$q', 'apiServices', 'moment', 'toastr' ]
-		};
-	}
-	
-	function pickUpFormCtrlFn($scope, $q, apiServices, moment, toastr) {
+        .module('dotWidget.wizard.pickUpForm', ['dotWidget.services', 
+                                                 'angularMoment', 
+                                                 'ngAnimate', 
+                                                 'toastr',
+                                                 'pascalprecht.translate'])
+            .config(configFn)
+            .directive('pickUpForm', pickUpFormDirectiveFn);
+    
+    function pickUpFormDirectiveFn() {
+        return {
+            restrict: 'E',
+            scope: false,
+            replace: true,
+            templateUrl: 'app/wizard/pickUpForm/pickUpForm.view.html',
+            controller: pickUpFormCtrlFn,
+            require: ['$scope', '$q', 'apiServices', 'moment', 'toastr', '$translate']
+        };
+    }
+    
+    function pickUpFormCtrlFn($scope, $q, apiServices, moment, toastr, $translate) {
         $scope.continuar = continuarFn;
 
         function getLocationSuccess(results) {
@@ -42,8 +44,8 @@
                     toObjectToken = '';
                     time = $scope.ride.hours * 60;
                 }
-				
-				$scope.cargando = true;
+                
+                $scope.cargando = true;
                 apiServices.booking.getRatedServices(
                     moment(scheduleDate).format('YYYY-MM-DDTHH:mm') /* scheduleDate */ ,
                     null  /* passengerUserName */ ,
@@ -73,19 +75,19 @@
 
         function getLocationFail(reasons) {
             $scope.cargando = false;			
-			var msg = 'No te preocupes, un ejercito de monos altamente entrenados esta yendo a solucionar el problema.<br>';
-			if(reasons.data) {
-				var data = reasons.data;
-				if(data.errorUniqueId){
-					msg += 'Si ves alguno por ahi, dale esto: ' + data.errorUniqueId + '<br><br>';
-				}
-				
-				if(reasons.status === 401){
-					msg += 'Por favor recargue la página.';
-				}			
-			}
-			
-			toastr.error(msg, 'Se produjo un error', { allowHtml : true, autoDismiss: false, timeOut : 0, maxOpened: 0, extendedTimeOut: 0 });
+            var msg = 'No te preocupes, un ejercito de monos altamente entrenados esta yendo a solucionar el problema.<br>';
+            if(reasons.data) {
+                var data = reasons.data;
+                if(data.errorUniqueId){
+                    msg += 'Si ves alguno por ahi, dale esto: ' + data.errorUniqueId + '<br><br>';
+                }
+                
+                if(reasons.status === 401){
+                    msg += 'Por favor recargue la página.';
+                }			
+            }
+            
+            toastr.error(msg, 'Se produjo un error', { allowHtml : true, autoDismiss: false, timeOut : 0, maxOpened: 0, extendedTimeOut: 0 });
         }
 
         function continuarFn() {
@@ -97,8 +99,8 @@
                     .then(getLocationSuccess, getLocationFail);
             } else {
                 apiServices.location
-					.getLocation($scope.ride.from)
-						.then(getLocationSuccess, getLocationFail);
+                    .getLocation($scope.ride.from)
+                        .then(getLocationSuccess, getLocationFail);
             }
         }
 
@@ -111,5 +113,29 @@
             $scope.ride[prefix] = resp.data[0].summary;
             $scope.ride[prefix + 'ObjectToken'] = resp.data[0].objectToken;
         }
-    }	
+
+        //Se setea el idioma inicial.
+        $scope.setLanguage = function (langCode) {
+            $translate.use(langCode);
+        }
+    }
+
+    function configFn($translateProvider) {
+        // traducciones definidas en un objeto, almacenadas en archivos js.
+        //Para acceder a la propiedad por ejemplo mediante traduccion_es.RES_GLOBAL.BIENVENIDA
+        $translateProvider.translations('es', traduccion_es);
+        $translateProvider.translations('en', traduccion_en);
+
+
+        //Setea el idioma preferido según la configuración del navegador.        
+        $translateProvider.preferredLanguage(getBrowserLanguage());
+    }
+
+    /**
+    * Obtiene el idioma del navegador.    
+    */
+    function getBrowserLanguage() {
+        //Lectura del idioma del navegador desde window
+        return (window.navigator.language || window.navigator.userLanguage).substring(0, 2);
+    };
 })();
