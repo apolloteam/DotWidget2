@@ -92,31 +92,31 @@
         }
 
         function getLocationFail(reasons) {
-            // TODO: Localizar mensajes.
             $scope.cargando = false;			
-			var msg = 'No te preocupes, un ejercito de monos altamente entrenados esta yendo a solucionar el problema.<br>';
-			if(reasons.data) {
+            var msg = $translate.instant('ResGlobal.GeneralError') + '<br>';
+
+            if(reasons.data) {
 				var data = reasons.data;
-				if(data.errorUniqueId){
-					msg += 'Si ves alguno por ahi, dale esto: ' + data.errorUniqueId + '<br><br>';
+				if (data.errorUniqueId) {
+				    msg += $translate.instant('ResGlobal.GeneralErrorWithUniqueId', data) + '<br><br>';
 				}
 				
 			    // TODO: Ver si hay que mostrar el errorUniqueId. 
 				if(reasons.status === 401){
 				    switch (reasons.data.errorCode) {
 				        case 'ERR.AUTH.ACCESSTOKEN.EXPIRED':
-				            msg = 'Se ha producido un error de autenticación vencida.<br>';
+				            msg = $translate.instant('ResGlobal.AuthorizationExpired') + '<br>';
 				            break;
 
 				        default:
-				            msg = 'Se ha producido un error de autenticación.<br>';
+				            msg = $translate.instant('ResGlobal.AuthorizationError') + '<br>';
 				    }
 
-					msg += 'Por favor recargue la página.';
+				    msg += $translate.instant('ResGlobal.PleaseReloadPage');
 				}			
 			}
 			
-			toastr.error(msg, 'Se produjo un error', { allowHtml : true, autoDismiss: false, timeOut : 0, maxOpened: 0, extendedTimeOut: 0 });
+			toastr.error(msg, $translate.instant('ResGlobal.AnErrorOccurred'), { allowHtml : true, autoDismiss: false, timeOut : 0, maxOpened: 0, extendedTimeOut: 0 });
         }
 
         function continuarFn() {
